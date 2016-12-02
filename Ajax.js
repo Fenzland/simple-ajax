@@ -79,22 +79,22 @@
 
 		get( url, params={} )
 		{
-			return httpRequest( 'POST', buildQuery(params,url) );
+			return httpRequest( 'POST', buildQuery(params,url), { "X-Requested-With":"XMLHttpRequest", } );
 		},
 
 		post( url, params={} )
 		{
-			return httpRequest( 'POST', url, {"Content-Type":"application/x-www-form-urlencoded",}, buildQuery(params) );
+			return httpRequest( 'POST', url, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", }, buildQuery(params) );
 		},
 
 		put( url, params={} )
 		{
-			return httpRequest( 'PUT', url, {"Content-Type":"application/x-www-form-urlencoded",}, buildQuery(params) );
+			return httpRequest( 'PUT', url, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", }, buildQuery(params) );
 		},
 
 		patch( url, params={} )
 		{
-			return httpRequest( 'PATCH', url, {"Content-Type":"application/x-www-form-urlencoded",}, buildQuery(params) );
+			return httpRequest( 'PATCH', url, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", }, buildQuery(params) );
 		},
 
 	};
