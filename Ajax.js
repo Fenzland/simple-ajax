@@ -7,10 +7,20 @@
 				const xhr= new XMLHttpRequest;
 				xhr.onreadystatechange= ()=>{
 					if( xhr.readyState==4 ){
-						resolve({
-							httpStatus: xhr.status,
-							response: xhr.responseText,
-						});
+						const response= {
+							status: xhr.status,
+							statusText: xhr.statusText,
+							content:xhr.responseText,
+							getHeader: name=>xhr.getResponseHeader(name),
+						};
+
+						try{
+							response.json= JSON.parse(xhr.responseText);
+						}catch(e){
+							response.json= null;
+						}
+
+						resolve(response);
 					}
 				}
 				xhr.open(method,url,true);
@@ -25,7 +35,7 @@
 		,
 		{
 			when( status, callback ){
-				return this.then(( { httpStatus, response, } )=>(status===httpStatus?callback(response):null,{ httpStatus, response, })),this;
+				return this.then( response=>(status===response.status?callback(response):null,response)),this;
 			},
 		}
 	);
