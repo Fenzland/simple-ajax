@@ -6,7 +6,7 @@ A simple plan for Ajax, with Promise of ES6, AMD supporting.
 # Usage
 
 ```javascript
-Ajax.get( url, params ).when(200,responseText=>{/*...*/}).when(404,()=>{/*...*/})/*.when(...*/;
+Ajax.get( url, params ).when(200,response=>{/*...*/}).when(404,()=>{/*...*/})/*.when(...*/;
 ```
 
 # All Apis
