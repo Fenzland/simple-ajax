@@ -1,4 +1,4 @@
-(( global, mod )=>(global.define && global.define.amd)?global.define(mod):global.Ajax=mod())(this,()=>{
+(( global, mod )=>(global.define && global.define.amd)?global.define( mod ):global.Ajax=mod())(this,()=>{
 	"use strict";
 
 	const httpRequest= ( method, url, headers, body )=>Object.assign(
@@ -6,36 +6,41 @@
 			( resolve, reject )=>{
 				const xhr= new XMLHttpRequest;
 				xhr.onreadystatechange= ()=>{
-					if( xhr.readyState==4 ){
+					if( xhr.readyState==4 )
+					{
 						const response= {
 							status: xhr.status,
 							statusText: xhr.statusText,
 							content:xhr.responseText,
-							getHeader: name=>xhr.getResponseHeader(name),
+							getHeader: name=>xhr.getResponseHeader( name ),
 						};
 
 						try{
-							response.json= JSON.parse(xhr.responseText);
-						}catch(e){
+							response.json= JSON.parse( xhr.responseText );
+						}
+						catch( e )
+						{
 							response.json= null;
 						}
 
-						resolve(response);
+						resolve( response );
 					}
 				}
-				xhr.open(method,url,true);
+				xhr.open( method, url, true );
 
-				for( name in headers ){
-					xhr.setRequestHeader(name,headers[name]);
+				for( name in headers )
+				{
+					xhr.setRequestHeader( name, headers[name] );
 				}
 
-				xhr.send(body);
+				xhr.send( body );
 			}
 		)
 		,
 		{
-			when( status, callback ){
-				return this.then( response=>(status===response.status?callback(response):null,response)),this;
+			when( status, callback )
+			{
+				return this.then( response=>(status===response.status?callback( response ):null,response) ),this;
 			},
 		}
 	);
@@ -79,22 +84,22 @@
 
 		get( url, params={} )
 		{
-			return httpRequest( 'POST', buildQuery(params,url), { "X-Requested-With":"XMLHttpRequest", } );
+			return httpRequest( 'POST', buildQuery( params, url ), { "X-Requested-With":"XMLHttpRequest", } );
 		},
 
 		post( url, params={} )
 		{
-			return httpRequest( 'POST', url, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", }, buildQuery(params) );
+			return httpRequest( 'POST', url, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", }, buildQuery( params ) );
 		},
 
 		put( url, params={} )
 		{
-			return httpRequest( 'PUT', url, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", }, buildQuery(params) );
+			return httpRequest( 'PUT', url, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", }, buildQuery( params ) );
 		},
 
 		patch( url, params={} )
 		{
-			return httpRequest( 'PATCH', url, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", }, buildQuery(params) );
+			return httpRequest( 'PATCH', url, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", }, buildQuery( params ) );
 		},
 
 	};
@@ -105,9 +110,10 @@
 
 		for( let key in parameters )
 		{
-			url+= delimiter+key+'='+encodeURIComponent(parameters[key]);
-			delimiter='&';
+			url+= delimiter+key+'='+encodeURIComponent( parameters[key] );
+			delimiter= '&';
 		}
+
 		return url;
 	}
 });
