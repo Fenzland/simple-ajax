@@ -82,24 +82,24 @@
 			return httpRequest( 'PATCH', url, headers, body );
 		},
 
-		get( url, params={} )
+		get( url, params={}, headers={} )
 		{
-			return httpRequest( 'POST', buildQuery( params, url ), { "X-Requested-With":"XMLHttpRequest", } );
+			return httpRequest( 'GET', buildQuery( params, url ), Object.assign( headers, { "X-Requested-With":"XMLHttpRequest", } ) );
 		},
 
-		post( url, params={} )
+		post( url, params={}, headers={} )
 		{
-			return httpRequest( 'POST', url, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", }, buildQuery( params ) );
+			return httpRequest( 'POST', url, Object.assign( headers, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", } ), buildQuery( params ) );
 		},
 
-		put( url, params={} )
+		put( url, params={}, headers={} )
 		{
-			return httpRequest( 'PUT', url, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", }, buildQuery( params ) );
+			return httpRequest( 'PUT', url, Object.assign( headers, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", } ), buildQuery( params ) );
 		},
 
-		patch( url, params={} )
+		patch( url, params={}, headers={} )
 		{
-			return httpRequest( 'PATCH', url, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", }, buildQuery( params ) );
+			return httpRequest( 'PATCH', url, Object.assign( headers, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", } ), buildQuery( params ) );
 		},
 
 	};
