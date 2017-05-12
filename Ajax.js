@@ -28,7 +28,7 @@
 				}
 				xhr.open( method, url, true );
 
-				for( name in headers )
+				for( let name in headers )
 				{
 					xhr.setRequestHeader( name, headers[name] );
 				}
@@ -84,22 +84,33 @@
 
 		get( url, params={}, headers={} )
 		{
-			return httpRequest( 'GET', buildQuery( params, url ), Object.assign( headers, { "X-Requested-With":"XMLHttpRequest", } ) );
+			crossOrigin( url ) || (headers['X-Requested-With']= "XMLHttpRequest");
+
+			return httpRequest( 'GET', buildQuery( params, url ), headers );
 		},
 
 		post( url, params={}, headers={} )
 		{
-			return httpRequest( 'POST', url, Object.assign( headers, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", } ), buildQuery( params ) );
+			crossOrigin( url ) || (headers['X-Requested-With']= "XMLHttpRequest");
+			headers['Content-Type']= "application/x-www-form-urlencoded";
+
+			return httpRequest( 'POST', url, headers, buildQuery( params ) );
 		},
 
 		put( url, params={}, headers={} )
 		{
-			return httpRequest( 'PUT', url, Object.assign( headers, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", } ), buildQuery( params ) );
+			crossOrigin( url ) || (headers['X-Requested-With']= "XMLHttpRequest");
+			headers['Content-Type']= "application/x-www-form-urlencoded";
+
+			return httpRequest( 'PUT', url, headers, buildQuery( params ) );
 		},
 
 		patch( url, params={}, headers={} )
 		{
-			return httpRequest( 'PATCH', url, Object.assign( headers, { "X-Requested-With":"XMLHttpRequest", "Content-Type":"application/x-www-form-urlencoded", } ), buildQuery( params ) );
+			crossOrigin( url ) || (headers['X-Requested-With']= "XMLHttpRequest");
+			headers['Content-Type']= "application/x-www-form-urlencoded";
+
+			return httpRequest( 'PATCH', url, headers, buildQuery( params ) );
 		},
 
 	};
@@ -115,5 +126,13 @@
 		}
 
 		return url;
+	}
+
+	function crossOrigin( url )
+	{
+		var anchor= document.createElement( 'a' );
+		anchor.href= url;
+
+		return url.origin !== location.origin;
 	}
 });

@@ -38,7 +38,7 @@
 
 		xhr.open( method, url, true );
 
-		for( name in headers )
+		for( var name in headers )
 		{
 			xhr.setRequestHeader( name, headers[name] );
 		}
@@ -133,7 +133,7 @@
 			params || (params={});
 			headers || (headers={});
 
-			headers['X-Requested-With']= "XMLHttpRequest";
+			if(!( crossOrigin( url ) )) headers['X-Requested-With']= "XMLHttpRequest";
 
 			return httpRequest( 'GET', buildQuery(params,url), headers );
 		},
@@ -143,7 +143,7 @@
 			params || (params={});
 			headers || (headers={});
 
-			headers['X-Requested-With']= "XMLHttpRequest";
+			if(!( crossOrigin( url ) )) headers['X-Requested-With']= "XMLHttpRequest";
 			headers['Content-Type']= "application/x-www-form-urlencoded";
 
 			return httpRequest( 'POST', url, headers, buildQuery(params) );
@@ -154,7 +154,7 @@
 			params || (params={});
 			headers || (headers={});
 
-			headers['X-Requested-With']= "XMLHttpRequest";
+			if(!( crossOrigin( url ) )) headers['X-Requested-With']= "XMLHttpRequest";
 			headers['Content-Type']= "application/x-www-form-urlencoded";
 
 			return httpRequest( 'PUT', url, headers, buildQuery(params) );
@@ -165,7 +165,7 @@
 			params || (params={});
 			headers || (headers={});
 
-			headers['X-Requested-With']= "XMLHttpRequest";
+			if(!( crossOrigin( url ) )) headers['X-Requested-With']= "XMLHttpRequest";
 			headers['Content-Type']= "application/x-www-form-urlencoded";
 
 			return httpRequest( 'PATCH', url, headers, buildQuery(params) );
@@ -186,5 +186,13 @@
 		}
 
 		return url;
+	}
+
+	function crossOrigin( url )
+	{
+		var anchor= document.createElement( 'a' );
+		anchor.href= url;
+
+		return url.origin !== location.origin;
 	}
 });
