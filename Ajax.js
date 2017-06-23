@@ -1,18 +1,20 @@
-(( global, mod )=>(global.define && global.define.amd)?global.define( mod ):global.Ajax=mod())(this,()=>{
+(( global, mod )=> (typeof module!=='undefined' && module.exports)? module.exports = mod() : (typeof define!=='undefined' && define.amd)? global.define( mod ) : global.Ajax= mod() )( this, ()=> {
 	"use strict";
 
-	const httpRequest= ( method, url, headers, body )=>Object.assign(
-		new Promise(
-			( resolve, reject )=>{
+	const httpRequest= ( method, url, headers, body )=> {
+		const listeners= {};
+
+		const promise= new Promise(
+			( resolve, reject )=> {
 				const xhr= new XMLHttpRequest;
-				xhr.onreadystatechange= ()=>{
+				xhr.onreadystatechange= ()=> {
 					if( xhr.readyState==4 )
 					{
 						const response= {
 							status: xhr.status,
 							statusText: xhr.statusText,
 							content:xhr.responseText,
-							getHeader: name=>xhr.getResponseHeader( name ),
+							getHeader: name=> xhr.getResponseHeader( name ),
 						};
 
 						try{
@@ -25,7 +27,8 @@
 
 						resolve( response );
 					}
-				}
+				};
+
 				xhr.open( method, url, true );
 
 				for( let name in headers )
@@ -35,21 +38,40 @@
 
 				xhr.send( body );
 			}
-		)
-		,
+		);
+
+		return bindMethod( promise.then( response=> {
+			if( response.status in listeners ){
+				return listeners[response.status]( response );
+			}else if( 0 in listeners ){
+				return listeners[0]( response );
+			}
+		} ) );
+
+		function bindMethod( promise )
 		{
-			when( status, callback )
-			{
-				return this.then( response=>(status===response.status?callback( response ):null,response) ),this;
-			},
+			promise.when= ( status, callback )=> {
+				if( status in listeners )
+				{
+					throw `Http status ${status} has already been listeners.`;
+				}
+
+				listeners[status]= callback;
+
+				return promise;
+			};
+
+			promise.else= ( callback )=> (listeners[0]= callback, promise);
+
+			return promise;
 		}
-	);
+	};
 
 	return {
 
 		OPTIONS( url, headers={} )
 		{
-			return httpRequest( 'HEAD', url, headers, null );
+			return httpRequest( 'OPTIONS', url, headers, null );
 		},
 
 		HEAD( url, headers={} )
@@ -135,4 +157,4 @@
 
 		return url.origin !== location.origin;
 	}
-});
+} );
