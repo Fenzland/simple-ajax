@@ -1,0 +1,24 @@
+{
+  "name": "ajaxy",
+  "version": "1.0.14",
+  "description": "A simple HTTP client with XMLHttpRequest and Promise.",
+  "main": "Ajax.ES5.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Fenzland/simple-ajax.git"
+  },
+  "keywords": [
+    "HTTP",
+    "Ajax",
+    "Request",
+    "XMLHttpRequest",
+    "promise"
+  ],
+  "author": "Fenz <uukoo@163.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Fenzland/simple-ajax/issues"
+  },
+  "homepage": "https://github.com/Fenzland/simple-ajax#readme"
+}
