@@ -1,6 +1,6 @@
 {
   "name": "ajaxy",
-  "version": "1.0.14",
+  "version": "1.0.21",
   "description": "A simple HTTP client with XMLHttpRequest and Promise.",
   "main": "Ajax.ES5.js",
   "scripts": {},
