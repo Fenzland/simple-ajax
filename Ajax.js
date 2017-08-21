@@ -141,15 +141,44 @@
 
 	function buildQuery( parameters, url='' )
 	{
+		url=url.split( '#' )[0];
+
 		let delimiter= url? (url.indexOf('?')+1? '&' : '?') : '';
 
 		for( let key in parameters )
 		{
-			url+= delimiter+key+'='+encodeURIComponent( parameters[key] );
+			let value= parameters[key];
+
+			if( value instanceof Object )
+			{
+				url+= delimiter+unpack(value).map( x=>key+x ).join( '&' );
+			}else{
+				url+= delimiter+key+'='+encodeURIComponent( parameters[key] );
+			}
+
 			delimiter= '&';
 		}
 
 		return url;
+
+		function unpack( pack )
+		{
+			const result= [];
+
+			for( let key in pack )
+			{
+				let value= pack[key];
+
+				if( value instanceof Object )
+				{
+					unpack( value ).forEach( x=>result.push('['+key+']'+x) );
+				}else{
+					result.push( '['+key+']='+encodeURIComponent( value ) );
+				}
+			}
+
+			return result;
+		}
 	}
 
 	function crossOrigin( url )
