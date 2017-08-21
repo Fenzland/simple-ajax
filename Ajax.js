@@ -2,7 +2,9 @@
 	"use strict";
 
 	const httpRequest= ( method, url, headers, body )=> {
-		const listeners= {};
+		const listeners= {
+			0: response=> response.status<400? Promise.resolve( response ) : Promise.reject( response )
+		};
 
 		const promise= new Promise(
 			( resolve, reject )=> {
@@ -43,7 +45,7 @@
 		return bindMethod( promise.then( response=> {
 			if( response.status in listeners ){
 				return listeners[response.status]( response );
-			}else if( 0 in listeners ){
+			}else{
 				return listeners[0]( response );
 			}
 		} ) );
